@@ -1,6 +1,6 @@
 /** 
  * @file MACROS.h 
- * @brief Funciones Macro para trabajar con los registros I/O
+ * @brief Function-like macros
  * @author Jose Manuel Enriquez Baena
  */ 
 

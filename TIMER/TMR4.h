@@ -1,11 +1,9 @@
-/*
- *  TMR4.h
- *
- *  Created: 19/05/2025 10:49:21
- *  Author: Jose Manuel Enriquez Baena
- * 
- * 	Description: Fichero que contiene los low-drivers para usar Timer 4 usando !OCR4A y OCR4D
- */ 
+/**
+ * @file TMR4.h
+ * @brief HAL functions for Timer 4
+ * @date 21/04/2025
+ * @author Jose Manuel Enriquez Baena
+ */
 
 #ifndef TMR4_H_
 #define TMR4_H_
@@ -20,6 +18,10 @@
 /*	   MACROS	   */
 /*******************/
 
+/**
+ * @defgroup CLK_PRESCALERS Clock Prescaler Definitions
+ * @brief Available clock division factors for timer/counter modules.
+ */
 #define DIV_CK2		0x02
 #define DIV_CK4		0x03
 #define DIV_CK8		0x04
@@ -34,14 +36,15 @@
 #define DIV_CK4096	0x0D
 #define DIV_CK8192	0x0E
 #define DIV_CK16384 0x0F
+/**@ */
 
 /****************************/
 /*	   Funciones Timer 4	*/
 /****************************/
 
 /**
- * @brief Inicializa el timer con el modo Phase and Frecuency Correct PWM, los puertos PC6 y PD7 como output
- * 		  y los registros !OC4A y OC4D usando el modo Compare Output
+ * @brief Inicialize the timer with Phase mode, Frecuency Correct PWM, ports PC6, PD7 configure like output
+ * 		  , !OC4A and OC4D registers configure like Compare Output mode
  */
 static inline void TMR4_PWM_Phase_Init()
 {
@@ -54,23 +57,21 @@ static inline void TMR4_PWM_Phase_Init()
 
 
 /**
- * @brief Resetea el contador y comienza el conteo
- * @param divClock Preescalado
+ * @brief Reset the count and start 
+ * @param divClock Preescaler
  */
 static inline void TMR4_PWM_Phase_Start(uint8_t divClock)
 {
-	TCNT4 = 0;				   // Reseteamos el contador 
-	TCCR4B |= (divClock<<CS40); // Preescalado
+	TCNT4 = 0;				    // Reset
+	TCCR4B |= (divClock<<CS40); // Configures preescaler
 }
 
 /**
- * @brief Configura los registros para obtener el ciclo de trabajo que deseamos
- * @param valueOCR4A Valor del registro !OCR4A
- * @param valueOCR4D Valor del registro OCR4D
- * 
- * Inicializa el valor de OCR4D y !OCR4A. Como !OCR4A esta negado, el valor que se pase por parametro se resta
- * con 255.
- * 
+ * @brief Configures the registers to set the desired PWM duty cycle.
+ * @param valueOCR4A Value for the !OCR4A register. 
+ * @param valueOCR4D Value for the OCR4D register.
+ * @details Initializes the OCR4D and !OCR4A values. Since !OCR4A uses inverted logic, 
+ * the parameter value is subtracted from 255 before being written to the register.
  */
 static inline void TMR4_PWM_Phase_Duty(uint8_t valueOCR4A, uint8_t valueOCR4D)
 {
@@ -79,7 +80,7 @@ static inline void TMR4_PWM_Phase_Duty(uint8_t valueOCR4A, uint8_t valueOCR4D)
 }
 
 /**
- * @brief Para el conteo del timer 
+ * @brief Stop the count
  */
 static inline void TMR4_PWM_Stop()
 {

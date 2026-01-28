@@ -1,13 +1,8 @@
 /**
  * @file   USART.h
- * @brief  LOW_DRIVES para configurar la USART0 de ATmega328P
+ * @brief  HAL functions for USART of ATmega328P
  * @author Jose Manuel Enriquez Baena
- * @date   17/03/2025 11:41:28
- *  
- * Fichero que contiene funciones(LOW_DRIVES) para trabajar comodamente con la USART de ATmega328P.
- * Funciones de inicializacion de USART y activacion y desactivacion de las interrupciones de TX, RX. Ademas de varias funciones de 
- * uso normal como imprimir una cadena o un caracter haciendo uso de polling.
- * 
+ * @date   17/03/2025
  */ 
 
 #ifndef USART_H_
@@ -17,21 +12,21 @@
 
 /**
  * @def RECEIVE(ADDRESS,BIT)
- * @brief Funcion Macro para comprobar si se ha recibido un dato
+ * @brief function-like macro which read a bit 
  */
 #define RECEIVE(ADDRESS,BIT) (ADDRESS & (1 << BIT))
 
 /********************************************************************************************
-*								Configuracion USART
+*								USART configuration
 ********************************************************************************************/
 
 /**
- * @brief Inicializa los registros necesarios para hacer funcionar la USART
- * @param valueUBRR Factor para tener la frecuencia deseada
+ * @brief Inicialize the USART0 registers
+ * @param valueUBRR The baud rate generator value (prescaler) to set the desired communication speed.
  */
 static inline void USART0_init(uint16_t valueUBRR)
 {
-	/* 1.- Set Bau Rate*/
+	/* 1.- Set Baud Rate*/
 	UBRR0H = (unsigned char)(valueUBRR>>8);
 	UBRR0L = (unsigned char)valueUBRR;
 	
@@ -46,11 +41,11 @@ static inline void USART0_init(uint16_t valueUBRR)
 
 
 /********************************************************************************************
-*							Configuracion de interrupciones USART
+*							USART Interrupt configuration
 ********************************************************************************************/
 
 /**
- * @brief Activa las interrupciones TX
+ * @brief Enable TX interrupt
  */
 static inline void USART0_enaINT_TX()
 {
@@ -58,7 +53,7 @@ static inline void USART0_enaINT_TX()
 }
 
 /**
- * @brief Activa las interrupciones RX
+ * @brief Enable RX interrupt
  */
 static inline void USART0_enaINT_RX()
 {
@@ -66,7 +61,7 @@ static inline void USART0_enaINT_RX()
 }
 
 /**
- * @brief Desactiva las interrupciones TX
+ * @brief Disable TX interrupt
  */
 static inline void USART0_disaINT_TX()
 {
@@ -74,7 +69,7 @@ static inline void USART0_disaINT_TX()
 }
 
 /**
- * @brief Desactiva las interrupciones RX
+ * @brief Disable RX interrupt
  */
 static inline void USART0_disaINT_RX()
 {
@@ -82,34 +77,36 @@ static inline void USART0_disaINT_RX()
 }
 
 /********************************************************************************************
-*								Prototipos de Funciones
+*								Prototype functions
 ********************************************************************************************/
 
 /**
- * @brief Imprime caracter usando la tecnica de polling
- * @param data Caracter a imprimir
+ * @brief Transmits a single character via USART0 using polling.
+ * @param data The character to be sent
+ * @note This function blocks until the Transmit Buffer is empty.
  */
 void USART0_putcharPolling(unsigned char data);
 
 /**
- * @brief Imprime caracter sin polling para usar con interrupcion
- * @param data Caracter a imprimir 
+ * @brief Transmits a single character via USART0 using interrupt.
+ * @param data The character to be sent
  */
 void USART0_putchar(unsigned char data);
 
 /**
- * @brief Imprime una cadena de caracteres usando polling (usa USART0_putcharPolling())
- * @param strPointer Puntero a la cadena de caracteres
+ * @brief Transmits a single character via USART0 using polling.
+ * @param strPointer Pointer to the string to sent
+ * @note This function blocks until the Transmit Buffer is empty.
  */
 void USART0_putString(char* strPointer);
 
 /**
- * @brief Lee un caracter por la USART para usar con interrupciones
+ * @brief Read a character using interrupt
  */
 char USART0_getchar(void);
 
 /**
- * @brief Lee un caracter por la USART usando la tecnica de polling
+ * @brief Read a character using polling
  */
 char USART0_getcharPolling(void);
 
