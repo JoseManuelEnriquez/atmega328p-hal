@@ -8,7 +8,9 @@
 #ifndef USART_H_
 #define USART_H_
 #include <avr/io.h>
+#include "usart_drv_interface.h"
 
+extern const uart_drv_interface_t UART0;
 
 /**
  * @def RECEIVE(ADDRESS,BIT)
